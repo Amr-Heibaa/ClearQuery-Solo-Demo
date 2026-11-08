@@ -1,0 +1,9 @@
+--extra-index-url https://download.pytorch.org/whl/cu130
+torch==2.14.1+cu130
+transformers==5.22.2
+accelerate==1.15.0
+bitsandbytes==0.50.2
+openai-whisper==20250625
+imageio-ffmpeg==0.8.1
+pglast==8.7
+pydantic==2.14.3

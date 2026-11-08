@@ -1,0 +1,27 @@
+{
+  "note": "SYNTHETIC. Branch aliases for Person 3 (BIR/catalog). Canonical SQL literal = branch_name.",
+  "as_of_date": "2026-11-01",
+  "currency": "EGP",
+  "branches": [
+    {
+      "branch_id": 1,
+      "branch_name": "Nasr City",
+      "branch_name_ar": "مدينة نصر"
+    },
+    {
+      "branch_id": 2,
+      "branch_name": "Heliopolis",
+      "branch_name_ar": "مصر الجديدة"
+    },
+    {
+      "branch_id": 3,
+      "branch_name": "Maadi",
+      "branch_name_ar": "المعادي"
+    },
+    {
+      "branch_id": 4,
+      "branch_name": "Alexandria",
+      "branch_name_ar": "إسكندرية"
+    }
+  ]
+}

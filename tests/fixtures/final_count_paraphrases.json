@@ -1,0 +1,9 @@
+{
+  "purpose": "Fresh regression questions authored after fixing the single instruction; not prompt examples or a formal held-out benchmark",
+  "cases": [
+    {"id":"N1", "question_ar":"عدد الأوردرات لكل فرع في ديسمبر ٢٠٢٦؟"},
+    {"id":"N2", "question_ar":"كل فرع عنده كام أوردر في فبراير 2027؟"},
+    {"id":"N3", "question_ar":"كام عدد الطلبات لكل فرع في يناير 2027؟"},
+    {"id":"N4", "question_ar":"عدد الطلبات لكل فرع في يوليو 2026 كام؟"}
+  ]
+}

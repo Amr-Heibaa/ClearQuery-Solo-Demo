@@ -1,0 +1,88 @@
+{
+  "repo_id": "Qwen/Qwen3-4B-Instruct-2507",
+  "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "status": "EXPLORATORY",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "lfs": null,
+      "size": 1570
+    },
+    {
+      "path": "LICENSE",
+      "lfs": null,
+      "size": 11343
+    },
+    {
+      "path": "README.md",
+      "lfs": null,
+      "size": 8168
+    },
+    {
+      "path": "config.json",
+      "lfs": null,
+      "size": 727
+    },
+    {
+      "path": "generation_config.json",
+      "lfs": null,
+      "size": 238
+    },
+    {
+      "path": "merges.txt",
+      "lfs": null,
+      "size": 1671839
+    },
+    {
+      "path": "model-00001-of-00003.safetensors",
+      "lfs": {
+        "sha256": "75311d91bb08cf0b882913da464a1e722a31fb44db35208663487efb7a3d8ed6",
+        "size": 3957900840,
+        "pointerSize": 135
+      },
+      "size": 3957900840
+    },
+    {
+      "path": "model-00002-of-00003.safetensors",
+      "lfs": {
+        "sha256": "0b48adbb1f60e901153d91907ba11ce63bd4b8b584482e730f48808d055dfba1",
+        "size": 3987450520,
+        "pointerSize": 135
+      },
+      "size": 3987450520
+    },
+    {
+      "path": "model-00003-of-00003.safetensors",
+      "lfs": {
+        "sha256": "7dd39ccca5e4de123c74c14af44c9bf2eb75df33b4614382af0134528e060d5d",
+        "size": 99630640,
+        "pointerSize": 133
+      },
+      "size": 99630640
+    },
+    {
+      "path": "model.safetensors.index.json",
+      "lfs": null,
+      "size": 32819
+    },
+    {
+      "path": "tokenizer.json",
+      "lfs": {
+        "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+        "size": 11422654,
+        "pointerSize": 133
+      },
+      "size": 11422654
+    },
+    {
+      "path": "tokenizer_config.json",
+      "lfs": null,
+      "size": 9377
+    },
+    {
+      "path": "vocab.json",
+      "lfs": null,
+      "size": 2776833
+    }
+  ]
+}

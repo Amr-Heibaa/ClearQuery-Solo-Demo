@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "clearquery-solo"
+version = "3.1.0"
+description = "Backend-focused university Sales 10% proof of concept"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+dependencies = ["pglast>=7,<9", "pydantic>=2.10,<3"]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<10", "imageio-ffmpeg==0.8.1"]
+database = ["psycopg[binary]>=3.2,<4"]
+microphone = ["sounddevice==0.5.3"]
+models = ["torch==2.14.1", "transformers==5.22.2", "accelerate==1.15.0", "bitsandbytes==0.50.2", "openai-whisper==20250625", "imageio-ffmpeg==0.8.1"]
+
+[project.scripts]
+clearquery = "clearquery.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+clearquery = ["voice/*.ps1"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests", "tests_person1"]
+markers = ["db: real local synthetic PostgreSQL regression"]

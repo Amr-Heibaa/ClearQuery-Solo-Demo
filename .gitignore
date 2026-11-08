@@ -1,0 +1,45 @@
+# Local runtimes and generated packages
+.venv*/
+venv/
+__pycache__/
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+.idea/
+.vscode/
+
+# Credentials, local databases and model downloads
+.env
+.env.*
+!.env.example
+.secrets/
+.pgdemo/
+.hf-cache/
+.models/
+.native_audio/
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.gguf
+
+# Private media, traces and diagnostic outputs
+runtime/
+reports/
+handoff/
+private/
+*.wav
+*.ogg
+*.opus
+*.mp3
+*.m4a
+*.webm
+*.mp4
+*.flac
+*.log
+*.zip
+*.tmp
+.DS_Store
+Thumbs.db

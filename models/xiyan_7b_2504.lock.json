@@ -1,0 +1,92 @@
+{
+  "repo_id": "XGenerationLab/XiYanSQL-QwenCoder-7B-2504",
+  "revision": "afe320fcaf18bee342174b4e35e5a481ae93719f",
+  "last_modified": "2026-10-13 03:40:39+00:00",
+  "license": "apache-2.0",
+  "files": [
+    {
+      "path": "added_tokens.json",
+      "size": 605,
+      "lfs_sha256": null,
+      "blob_id": "482ced4679301bf287ebb310bdd1790eb4514232"
+    },
+    {
+      "path": "config.json",
+      "size": 758,
+      "lfs_sha256": null,
+      "blob_id": "fd2cfb1de1da6b6b34d1ea513878a40967ee136c"
+    },
+    {
+      "path": "configuration.json",
+      "size": 26,
+      "lfs_sha256": null,
+      "blob_id": "9fbcf957f0338085ab0d7245f17f9fd1a1b64a65"
+    },
+    {
+      "path": "generation_config.json",
+      "size": 156,
+      "lfs_sha256": null,
+      "blob_id": "8d350eb3a84646b4856a61deca7d8d12cc6929b7"
+    },
+    {
+      "path": "merges.txt",
+      "size": 1671853,
+      "lfs_sha256": null,
+      "blob_id": "31349551d90c7606f325fe0f11bbb8bd5fa0d7c7"
+    },
+    {
+      "path": "model-00001-of-00004.safetensors",
+      "size": 4877660776,
+      "lfs_sha256": "7516d6c439508d2fec9831d874c442f13f3c835f0119ad0ad373b985501b68e1",
+      "blob_id": "4f4ed7478f2cf6d72ec2a95364cd5acc6fce89c4"
+    },
+    {
+      "path": "model-00002-of-00004.safetensors",
+      "size": 4932751008,
+      "lfs_sha256": "08984bf413272854b12be1807c0a606fe60b95753365047bc41f7951d199ed74",
+      "blob_id": "2c4818a88bae15a3aac11a87bad7459d27cf06cb"
+    },
+    {
+      "path": "model-00003-of-00004.safetensors",
+      "size": 4330865200,
+      "lfs_sha256": "e0ffdf921d3ce4a5c40cea8045ee068efff15c77426d50f8c4112734244452a7",
+      "blob_id": "08576e59192484e273c35a639977de642f3fe28f"
+    },
+    {
+      "path": "model-00004-of-00004.safetensors",
+      "size": 1089994880,
+      "lfs_sha256": "3f28d56a1844db20860d34663d10edab325e7db6fafbc650233995254f532b41",
+      "blob_id": "225dbb96dd4f3f162d2c43da686e0d948aa0a2ec"
+    },
+    {
+      "path": "model.safetensors.index.json",
+      "size": 27752,
+      "lfs_sha256": null,
+      "blob_id": "6ca5084b88f1a95fef37f1b94c6e87ff69422bb7"
+    },
+    {
+      "path": "special_tokens_map.json",
+      "size": 613,
+      "lfs_sha256": null,
+      "blob_id": "ac23c0aaa2434523c494330aeb79c58395378103"
+    },
+    {
+      "path": "tokenizer.json",
+      "size": 11422063,
+      "lfs_sha256": "5eee858c5123a4279c3e1f7b81247343f356ac767940b2692a928ad929543214",
+      "blob_id": "6c06829626bf44f72f0bad94469cb071bd4a18ab"
+    },
+    {
+      "path": "tokenizer_config.json",
+      "size": 7361,
+      "lfs_sha256": null,
+      "blob_id": "9bf9b176a384cb7d6013610a243b702b99459eaa"
+    },
+    {
+      "path": "vocab.json",
+      "size": 2776833,
+      "lfs_sha256": null,
+      "blob_id": "4783fe10ac3adce15ac8f358ef5462739852c569"
+    }
+  ]
+}

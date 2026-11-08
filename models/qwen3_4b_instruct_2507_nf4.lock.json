@@ -1,0 +1,79 @@
+{
+  "repo_id": "unsloth/Qwen3-4B-Instruct-2507-bnb-4bit",
+  "revision": "f12db89cd5156e090618dded9b4367f23f8f3b33",
+  "status": "EXPLORATORY",
+  "base_model": [
+    "Qwen/Qwen3-4B-Instruct-2507"
+  ],
+  "representation": "PUBLISHED_NF4_QUANTIZATION",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "lfs": null,
+      "size": 1570
+    },
+    {
+      "path": "README.md",
+      "lfs": null,
+      "size": 9044
+    },
+    {
+      "path": "added_tokens.json",
+      "lfs": null,
+      "size": 707
+    },
+    {
+      "path": "chat_template.jinja",
+      "lfs": null,
+      "size": 4040
+    },
+    {
+      "path": "config.json",
+      "lfs": null,
+      "size": 2185
+    },
+    {
+      "path": "generation_config.json",
+      "lfs": null,
+      "size": 237
+    },
+    {
+      "path": "merges.txt",
+      "lfs": null,
+      "size": 1671853
+    },
+    {
+      "path": "model.safetensors",
+      "lfs": {
+        "sha256": "f632ab95da1d8f307237094aca7c7dfa9e416b6d2f87bdd8ecda6dadfedb204d",
+        "size": 2653133894,
+        "pointerSize": 135
+      },
+      "size": 2653133894
+    },
+    {
+      "path": "special_tokens_map.json",
+      "lfs": null,
+      "size": 614
+    },
+    {
+      "path": "tokenizer.json",
+      "lfs": {
+        "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+        "size": 11422654,
+        "pointerSize": 133
+      },
+      "size": 11422654
+    },
+    {
+      "path": "tokenizer_config.json",
+      "lfs": null,
+      "size": 9653
+    },
+    {
+      "path": "vocab.json",
+      "lfs": null,
+      "size": 2776833
+    }
+  ]
+}

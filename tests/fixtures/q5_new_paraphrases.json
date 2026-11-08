@@ -1,0 +1,11 @@
+{
+  "purpose": "New regression inputs authored after the single prompt change was fixed; not prompt examples or a formal held-out benchmark",
+  "cases": [
+    {"id":"P1", "question_ar":"إجمالي المبيعات لكل فرع في نوفمبر ٢٠٢٦ كام؟", "decision":"ANSWER", "metric":"total_sales", "shape":"by_branch", "branch":null, "start":"2026-11-01"},
+    {"id":"P2", "question_ar":"أنهي فرع عنده أعلى إجمالي مبيعات في سبتمبر 2026؟", "decision":"ANSWER", "metric":"total_sales", "shape":"top_branch", "branch":null, "start":"2026-09-01"},
+    {"id":"P3", "question_ar":"كام إجمالي مبيعات فرع مدينة نصر في ديسمبر 2026؟", "decision":"ANSWER", "metric":"total_sales", "shape":"overall", "branch":"Nasr City", "start":"2026-12-01"},
+    {"id":"P4", "question_ar":"كام عدد الطلبات لكل فرع في نوفمبر ٢٠٢٦؟", "decision":"ANSWER", "metric":"order_count", "shape":"by_branch", "branch":null, "start":"2026-11-01"},
+    {"id":"P5", "question_ar":"مين أحسن فرع في ديسمبر 2026؟", "decision":"CLARIFY", "metric":null, "shape":null, "branch":null, "start":"2026-12-01"},
+    {"id":"P6", "question_ar":"صافي الربح لكل فرع في نوفمبر ٢٠٢٦ كام؟", "decision":"ABSTAIN", "metric":null, "shape":"by_branch", "branch":null, "start":"2026-11-01"}
+  ]
+}
