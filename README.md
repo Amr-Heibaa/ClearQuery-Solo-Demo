@@ -162,9 +162,10 @@ own project's secrets; it does not search another workspace.
 
 Provisioning changes a fresh synthetic database; runtime query execution never
 writes business data. Do not use `--rebuild` against a database you need to keep.
-No Linux database provisioner is claimed. **Colab SQL execution remains disabled**:
-the notebook provisions no database and never exposes or connects to a laptop
-database over the internet.
+The Colab notebook now includes optional Linux-only provisioning of a fresh,
+isolated synthetic instance. Execution remains disabled until its full read-only
+preflight passes. This new hosted provisioning path has not yet been verified
+on Colab. No laptop connection or public endpoint is supported.
 
 ## Testing and verification
 
@@ -192,13 +193,37 @@ SELECT fixtures to unchanged Gold SQL, including zero-order branches, row caps,
 timeouts and permission denial. They are labelled fixture tests, not model output.
 Original local real-model Q1-Q5 results matched Gold; private traces are not
 distributed. Fresh inference is required to reproduce model behavior in a new
-environment. Release verification on Python 3.12: **370 passed, 66 skipped** with
-database integration disabled; **435 passed, 1 skipped** with the verified local
-synthetic database explicitly enabled. The remaining skip requires a private
-historical inference trace, which is intentionally not distributed. These are
-test-suite results, not model accuracy measurements. The base installation and
-dependency consistency check passed in a fresh environment without model or UI
-packages.
+environment. Initial release verification on Python 3.12: **370 passed, 66
+skipped** offline; **435 passed, 1 skipped** with the synthetic database enabled.
+Updated notebook-release verification: **407 passed, 66 skipped** offline;
+**472 passed, 1 skipped** with a fresh isolated synthetic PostgreSQL instance.
+The remaining skip requires private historical evidence, which is not published.
+These are test-suite results, not model accuracy measurements. Private model
+traces are intentionally not distributed. Local workspace checks also verified
+fresh Q2 Qwen/XiYan inference through SQL Guard; actual Q1-Q5 rows from saved
+real-model candidates matched Gold on an isolated synthetic test instance.
+
+## Local VS Code notebook
+
+Open `ClearQuery_Solo_Demo_VSCode.ipynb` from the clone root. After installing the
+model dependencies and locked weights above, install the notebook kernel:
+
+```bash
+python -m pip install -e ".[database,notebook]"
+```
+
+Select that Python environment (`.venv` in the installation example) in VS Code,
+then run the cells in order. Choose typed Arabic or an existing private audio
+file, review/edit Arabic and type `CONFIRM`. The notebook invokes the existing
+backend and displays exact translation, BIR/decisions, SQL and checks as readable
+tables instead of JSON dumps. Redisplaying the same confirmed input does not
+repeat model inference.
+
+After Guard approval, a separate `RUN APPROVED QUERY` prompt requests actual
+synthetic PostgreSQL rows with the existing five-minute, single-use capability.
+The configured local synthetic server must already be running and pass preflight;
+the notebook does not provision or start it. Windows live microphone capture is
+still blocked: use a private audio file. Browser capture belongs to Colab.
 
 ## Colab
 
@@ -208,11 +233,20 @@ the notebook and that ZIP to your Colab session, then follow the numbered cells.
 Audio capture uses the browser-to-Python bridge after permission and a Start click;
 it does not use remote sounddevice capture or manual audio uploads.
 
-Hosted T4 and browser capture remain unverified. The pinned Qwen NF4 checkpoint
+The updated hosted database workflow is unverified. The pinned Qwen NF4 checkpoint
 requests BF16: the notebook probes actual T4 BF16/NF4 support and stops on
 incompatibility rather than silently changing the checkpoint settings. Notebook
 outputs are empty in this repository. Browser permission/sign-in and hosted
 hardware are user actions; no public tunnel or database endpoint is created.
+
+For actual rows, opt into section **4B** with `SETUP SYNTHETIC DATABASE`. It installs
+PostgreSQL without creating a default service cluster and provisions only this
+runtime's loopback synthetic instance. After Arabic confirmation the existing
+pipeline runs automatically. Safe SQL offers a separate `RUN APPROVED QUERY`
+prompt, with current Guard review, fixture/permission preflight, expiry and replay
+checks. Otherwise execution stays disabled. Actual rows come from that verified
+synthetic database; setup or safety failure never substitutes Gold SQL or connects
+to a laptop database.
 
 ## Limitations and privacy
 

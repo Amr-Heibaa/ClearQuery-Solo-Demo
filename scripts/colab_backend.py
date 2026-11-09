@@ -13,14 +13,14 @@ ROOT=Path(__file__).resolve().parents[1]
 def write(path, value):
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
     with path.open('x',encoding='utf-8') as output:json.dump(value,output,ensure_ascii=False,indent=2)
-    print(json.dumps(value,ensure_ascii=False,indent=2),flush=True)
+    print('Stage completed; exact outputs saved privately for readable notebook display.',flush=True)
 
 
 def runtime():
     import torch
     for line in (ROOT/'requirements-colab-t4.txt').read_text().splitlines():
         if '==' in line:
-            name,pin=line.split('==');assert version(name)==pin,(name,version(name),pin)
+            name,pin=line.split('==');name=name.split('[')[0];assert version(name)==pin,(name,version(name),pin)
     assert torch.cuda.is_available(),'CUDA unavailable; model inference disabled.'
     assert 'T4' in torch.cuda.get_device_name(0),'Select a Colab T4 runtime.'
     assert torch.cuda.get_device_capability(0)==(7,5),'Unexpected T4 compute capability.'

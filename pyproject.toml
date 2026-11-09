@@ -15,6 +15,7 @@ dependencies = ["pglast>=7,<9", "pydantic>=2.10,<3"]
 test = ["pytest>=8,<10", "imageio-ffmpeg==0.8.1"]
 database = ["psycopg[binary]>=3.2,<4"]
 microphone = ["sounddevice==0.5.3"]
+notebook = ["ipykernel>=6,<8"]
 models = ["torch==2.14.1", "transformers==5.22.2", "accelerate==1.15.0", "bitsandbytes==0.50.2", "openai-whisper==20250625", "imageio-ffmpeg==0.8.1"]
 
 [project.scripts]

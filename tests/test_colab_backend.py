@@ -29,6 +29,7 @@ def test_backend_bundle_extracts_verified_source_without_ui(tmp_path):
     assert 'scripts/colab_microphone.js' in manifest
     assert 'requirements-colab-t4.txt' in manifest
     assert not any(name.startswith(('apps/','src/clearquery/live_ui/')) for name in manifest)
+    assert not any(part.endswith('.egg-info') for name in manifest for part in Path(name).parts)
     for name,digest in manifest.items():assert hashlib.sha256((destination/name).read_bytes()).hexdigest()==digest
     with pytest.raises(ValueError,match='already exists'):extract_source(data,destination)
 

@@ -20,7 +20,9 @@ Run numbered sections in order on a **hosted T4 GPU runtime**. This notebook imp
 4. Download/hash-check the unchanged model revisions and run component tests.
 5. Choose confirmed text, or capture live browser microphone audio and run Whisper.
 6. Explicitly confirm Arabic, then invoke the existing Pipeline and inspect every stage.
-7. Export privacy-filtered evidence. SQL execution remains disabled.
+7. Optionally provision isolated synthetic PostgreSQL (section 4B).
+8. Show SQL and actual rows as readable tables; execution needs RUN APPROVED QUERY.
+9. Export privacy-filtered evidence.
 
 No hosted T4, browser microphone or Colab inference success is claimed in this saved notebook: all code cells are unexecuted. Current local verification is provided separately. Microphone recording requires your browser permission and a Start click. Audio goes directly from the browser to your private Colab runtime; no manual audio upload is used.
 ''')
@@ -77,7 +79,7 @@ READY=MODELS_READY=False
 command(['nvidia-smi'])
 RUNTIME_FILE=PRIVATE/(uuid4().hex+'-runtime.json')
 command([PY,'scripts/colab_backend.py','runtime','--output',str(RUNTIME_FILE)])
-RUNTIME=json.loads(RUNTIME_FILE.read_text());print(json.dumps(RUNTIME,indent=2))
+RUNTIME=json.loads(RUNTIME_FILE.read_text());print('T4 compatibility passed:',RUNTIME.get('gpu'))
 READY=True
 ''')
 md('''## 4 — Pinned models and existing component tests
@@ -119,29 +121,26 @@ MODELS_READY=True
 CONFIRMED_JOB=None
 LAST_RESULT=None
 ''')
+md('''## 4B — Optional isolated synthetic PostgreSQL for real results
+Run once before confirming your question. This creates a fresh private PostgreSQL cluster in this Colab runtime only, at **127.0.0.1:55432**. Reuses existing schema, roles, fixtures and full read-only security preflight. No laptop connection or public tunnel. Refuses existing unverified clusters/port collisions. Failed setup leaves execution disabled. The new Linux provisioning path still needs a hosted Colab test.
+''')
+code('''
+DB_READY=False
+DB_EXECUTION_ENABLED=False
+if input('Type SETUP SYNTHETIC DATABASE for actual result rows (Enter skips): ')=='SETUP SYNTHETIC DATABASE':
+    command([PY,'scripts/colab_database.py','setup'],timeout=1000)
+    command([PY,'scripts/colab_database.py','verify'],timeout=60)
+    DB_READY=True
+    DB_EXECUTION_ENABLED=True
+else:
+    print('Database execution disabled. SQL generation and Guard remain available.')
+''')
 md('''## 5 — Readable exact stage output
 Arabic is rendered right-to-left. Text is HTML-escaped, never corrected or translated by the display helper. Private result files preserve complete raw model outputs, model revisions, timings and errors.
 ''')
-code('''
-from IPython.display import display,HTML,Markdown
-import html
-def exact(title,value,rtl=False):
-    display(Markdown('**'+title+'**'))
-    text=value if isinstance(value,str) else json.dumps(value,ensure_ascii=False,indent=2)
-    display(HTML('<pre dir="'+('rtl' if rtl else 'ltr')+'" style="white-space:pre-wrap;text-align:'+('right' if rtl else 'left')+'">'+html.escape(text)+'</pre>'))
-def show_result(result):
-    exact('Trace / stop / processing time', {k:result.get(k) for k in ('trace_id','stop_reason','runtime_ms','executed')})
-    keys={'asr':'transcript_ar_raw','confirmation':'question_ar','translation':'text_en','sql_candidate':'candidate_sql'}
-    for stage in result.get('stages',[]):
-        value=stage.get('result')
-        if value is not None:
-            exact(stage['stage']+' · '+stage['trace_id'],value.get(keys[stage['stage']]) if stage['stage'] in keys else value,
-                rtl=stage['stage'] in {'asr','confirmation'})
-            if stage['stage']=='sql_candidate':exact('Exact raw XiYan model output',value.get('raw_model_output'))
-        if stage.get('error'):exact('Actual stage error',stage['error'])
-''')
+code((ROOT/'scripts/colab_notebook_runtime.py').read_text(encoding='utf-8'))
 md('''## 6A — Optional real typed question
-Choose a sample or type Arabic. Explicit confirmation is required before any Qwen/SQL generation. For microphone input use **6B and 6C instead**. Both paths then use section 7.
+Choose a sample or type Arabic. Explicit confirmation is required before any Qwen/SQL generation. For microphone input use **6B and 6C instead**. Confirmation automatically runs the real pipeline. Section 7 can redisplay its result.
 ''')
 code('''
 assert MODELS_READY
@@ -158,6 +157,7 @@ choice=input('Case key or your Arabic question: ')
 question=questions.get(choice,choice);exact('Final Arabic',question,rtl=True)
 assert question.strip() and input('Type CONFIRM to process this exact Arabic: ')=='CONFIRM'
 CONFIRMED_JOB={'question_ar':question,'user_confirmed':True}
+process_confirmed()
 ''')
 md('''## 6B — Direct laptop microphone → Colab → real Whisper
 Run this cell, click **Start microphone**, grant the browser microphone permission, speak Egyptian Arabic, then click **Stop**. Recording stops automatically at 30 seconds. Cancel/denial/no device/empty recording fail closed. This is the Colab `eval_js` browser-to-Python bridge, not sounddevice or a remote-machine microphone.
@@ -186,7 +186,7 @@ finally:
     payload=None
 ''')
 md('''## 6C — Mandatory Arabic confirmation for microphone input
-Run only after successful 6B. Keep the exact raw transcript or edit it. Neither translation nor SQL generation runs without the explicit CONFIRM response.
+Run only after successful 6B. Keep the exact raw transcript or edit it. Neither translation nor SQL generation runs without the explicit CONFIRM response. After confirmation the pipeline runs automatically; approved SQL can execute only after the separate RUN APPROVED QUERY confirmation.
 ''')
 code('''
 CONFIRMED_JOB=None
@@ -197,28 +197,19 @@ edit=input('Final Arabic edit (Enter keeps raw Arabic exactly): ')
 question=raw if edit=='' else edit;exact('Final Arabic',question,rtl=True)
 assert question.strip() and input('Type CONFIRM to process this exact Arabic: ')=='CONFIRM'
 CONFIRMED_JOB={'question_ar':question,'user_confirmed':True,'asr_file':str(ASR_PATH)}
+process_confirmed()
 ''')
-md('''## 7 — Existing backend Pipeline: actual Qwen → BIR/policy → Gate → XiYan V4 → Guard
+md('''## 7 — Existing backend Pipeline: BIR/policy → Qwen → Gate → XiYan V4 → Guard
 The actual frozen flow resolves BIR/policy before translating; CLARIFY and ABSTAIN stop early. ANSWER proceeds through the real adapters and gates. Models unload sequentially. A mismatch, unverifiable translation, model error or Guard rejection is a valid visible safety outcome. No result or SQL is substituted.
 ''')
 code('''
-assert MODELS_READY and CONFIRMED_JOB and CONFIRMED_JOB['user_confirmed'] is True
-LAST_RESULT=None
-job_path=PRIVATE/(uuid4().hex+'-job.json');result_path=PRIVATE/(uuid4().hex+'-result.json')
-with job_path.open('x',encoding='utf-8') as stream:json.dump(CONFIRMED_JOB,stream,ensure_ascii=False)
-try:
-    command([PY,'scripts/colab_backend.py','pipeline','--job',str(job_path),'--output',str(result_path)])
-finally:
-    if result_path.exists():
-        LAST_RESULT=json.loads(result_path.read_text());show_result(LAST_RESULT)
-if LAST_RESULT:assert LAST_RESULT['executed'] is False
+process_confirmed()  # Redisplays a completed confirmation without repeating inference.
 ''')
-md('''## 8 — Database execution DISABLED
-No fresh synthetic PostgreSQL instance is provisioned by this notebook, so there is no executor cell or database connection. It never connects to your laptop database. Enabling execution would require separate safe provisioning and the same existing `ControlledExecutor` preflight, role/fixture checks and explicit authorization. Do not expose a database or create a tunnel.
+md('''## 8 — Optional explicit read-only execution / redisplay
+Confirmation already processes the question and offers execution when section 4B passed. Use this cell if execution was skipped earlier. Requires **RUN APPROVED QUERY**, a fresh Guard review and the existing ControlledExecutor preflight. Expired/replayed requests cannot execute. CLARIFY, ABSTAIN, translation failure and Guard rejection stop safely. Actual rows come only from the verified synthetic database. No Gold SQL substitution.
 ''')
 code('''
-assert DB_READY is False and DB_EXECUTION_ENABLED is False
-print('SQL execution DISABLED: no independently provisioned and verified synthetic Colab database.')
+run_approved_query()
 ''')
 md('''## 9 — Export safe evidence only
 The existing evidence exporter omits audio, paths, hashes, transcripts, translations, raw SQL/model text, database rows and free-form errors. Actual raw outputs remain privately in this runtime. Do not share a notebook saved with private output cells. Nothing automatically downloads logs or archives the runtime.
@@ -241,7 +232,7 @@ files.download(str(safe_path))
 for index,cell in enumerate(cells):cell['id']=f'clearquery-backend-{index:02d}'
 notebook={'cells':cells,'metadata':{'kernelspec':{'display_name':'Python 3','language':'python','name':'python3'},
     'language_info':{'name':'python'},'colab':{'name':'ClearQuery_Solo_Demo_Colab.ipynb','provenance':[]},
-    'clearquery':{'hosted_colab_verified':False,'database_provisioning_supported':False,'source_reuse':True,
+    'clearquery':{'hosted_colab_verified':False,'database_provisioning_supported':True,'source_reuse':True,
         'local_backend_changed':False,'sql_execution_enabled':False,'microphone':'google.colab.output.eval_js',
         'torch_colab_build':'2.14.1+cu126','model_settings_changed':False}},'nbformat':4,'nbformat_minor':5}
 (ROOT/'ClearQuery_Solo_Demo_Colab.ipynb').write_text(json.dumps(notebook,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')

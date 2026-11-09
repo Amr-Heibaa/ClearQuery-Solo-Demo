@@ -12,3 +12,4 @@ numpy==2.5.4
 huggingface-hub==2.4.0
 pytest==9.2.0
 setuptools==84.2.1
+psycopg[binary]==3.3.8

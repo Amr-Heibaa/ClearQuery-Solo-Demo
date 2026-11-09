@@ -7,7 +7,7 @@ import zipfile
 ROOT=Path(__file__).resolve().parents[1]
 DIRECTORIES=("src","scripts","tests","gold","db","data","contracts","configs","models")
 FILES=("pyproject.toml","requirements-models.txt","requirements-colab-t4.txt","PERSON1_SHA256SUMS","ClearQuery_Solo_Demo_Colab.ipynb","LICENSE","THIRD_PARTY_NOTICES.md","README.md")
-EXCLUDED_TESTS={'test_live_ui.py','test_database_ui.py','test_safe_database.py'}
+EXCLUDED_TESTS={'test_live_ui.py','test_database_ui.py','test_safe_database.py','test_vscode_notebook.py'}
 EXCLUDED_SCRIPTS={'smoke_live_ui.py','smoke_database_ui.py','recheck_registered_q2.py'}
 
 
@@ -17,6 +17,7 @@ def build(output):
     for directory in DIRECTORIES:
         paths.extend(p for p in (ROOT/directory).rglob('*') if p.is_file() and
             p.suffix.lower() in {'.py','.js','.json','.sql','.csv','.md','.txt'} and '__pycache__' not in p.parts
+            and not any(part.endswith('.egg-info') for part in p.parts)
             and not (directory=='tests' and p.name in EXCLUDED_TESTS)
             and not (directory=='scripts' and p.name in EXCLUDED_SCRIPTS)
             and not p.relative_to(ROOT).as_posix().startswith('src/clearquery/live_ui/'))
